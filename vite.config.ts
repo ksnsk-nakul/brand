@@ -1,11 +1,12 @@
 import inertia from '@inertiajs/vite';
+import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig, lazyPlugins } from 'vite-plus';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
     plugins: lazyPlugins(() => [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.ts'],
@@ -26,7 +27,12 @@ export default defineConfig({
                 },
             },
         }),
-    ]),
+        command === 'serve'
+            ? wayfinder({
+                  formVariants: true,
+              })
+            : null,
+    ].filter(Boolean)),
     server: {
         watch: {
             ignored: [
@@ -73,4 +79,4 @@ export default defineConfig({
             entryPoint: 'resources/css/app.css',
         },
     },
-});
+}));
