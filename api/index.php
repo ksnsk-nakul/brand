@@ -1,9 +1,17 @@
 <?php
 
+// Populate environment variables for Laravel's env() helper
+foreach ($_SERVER as $key => $value) {
+    if (is_string($value) && (str_starts_with($key, 'APP_') || str_starts_with($key, 'DB_') || str_starts_with($key, 'SESSION_') || str_starts_with($key, 'CACHE_') || str_starts_with($key, 'LOG_'))) {
+        putenv("{$key}={$value}");
+        $_ENV[$key] = $value;
+    }
+}
+
 $storagePath = '/tmp/storage';
 $cachePath = '/tmp/bootstrap/cache';
 
-// Create writable directories in /tmp
+// Prepare writable /tmp directories
 if (!is_dir($storagePath)) {
     mkdir($storagePath . '/framework/views', 0755, true);
     mkdir($storagePath . '/framework/cache', 0755, true);
@@ -15,7 +23,7 @@ if (!is_dir($cachePath)) {
     mkdir($cachePath, 0755, true);
 }
 
-// Redirect storage and bootstrap cache paths
+// Redirect storage and cache pointers to /tmp
 putenv("APP_STORAGE={$storagePath}");
 putenv("APP_CONFIG_CACHE={$cachePath}/config.php");
 putenv("APP_SERVICES_CACHE={$cachePath}/services.php");
