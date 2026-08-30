@@ -7,6 +7,6 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function toUrl(href: NonNullable<InertiaLinkProps['href']>) {
+export function toUrl(href: NonNullable<InertiaLinkProps['href']>): string {
     return typeof href === 'string' ? href : href?.url;
 }
