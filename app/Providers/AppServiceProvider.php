@@ -46,5 +46,8 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+        if (app()->environment('production') || !empty($_ENV['VERCEL'])) {
+            URL::forceScheme('https');
+        }
     }
 }
